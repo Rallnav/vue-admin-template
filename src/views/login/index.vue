@@ -181,6 +181,7 @@ $light_gray:#eee;
   min-height: 100%;
   width: 100%;
   background-color: $bg;
+  background:url("~@/../static/images/wallhaven-94967.jpg") center center no-repeat ;
   overflow: hidden;
 
   .login-form {
