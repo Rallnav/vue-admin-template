@@ -49,7 +49,24 @@ export default {
     data(){
         return{
             todoItem:{
-                abstract:"任务"
+                abstract:"任务",
+                finishGoal:new Date().toLocaleString(),
+                category:"Task",
+                difficulty:20,
+                importanty:4,
+                priority:3,
+                repeat:1,
+                remind:1,
+                subtask:[
+                    {
+                        name:"homework"
+                        finshedFlag:false
+                    }
+                ]
+                note:""
+                file:""
+                comment:""
+                isHabit:false
             },
 
             allSessions:[
@@ -57,7 +74,7 @@ export default {
                     desciption:"一致性 Consistency",
                     id:1,
                     startTime: new Date().toLocaleString(),
-                    endTime:new Date().toLocaleString,
+                    endTime:new Date().toLocaleString(),
                     durantion: 20,
                     startProgress:0,
                     endProgress:20,
