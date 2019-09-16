@@ -1,5 +1,5 @@
 <template>
-    <section class="todoapp">
+  <section class="todoapp">
         <header class="header">
     <h1>todos</h1>
     <input class="new-todo"
