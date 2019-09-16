@@ -90,6 +90,15 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/lonly',
+    component: () => import('@/views/todo/Lonly'),
+    meta: {
+      title: 'Lonly',
+      icon: 'form'
+    }
+
+  },
+  {
     path: '/form',
     component: Layout,
     children: [
