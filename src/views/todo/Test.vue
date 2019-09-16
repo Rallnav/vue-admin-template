@@ -76,7 +76,6 @@ export default{
     },
     methods:{
         reverseMessage:function(id){
-            
             this.todos[id].text = this.todos[id].text.split('').reverse().join('')
         },
         addTodo:function(){
