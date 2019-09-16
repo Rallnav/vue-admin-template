@@ -11,9 +11,11 @@
             @keyup.enter="addTodo">
             <section v-show=todos.length  v-cloak>
             <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
+            <label for="toggle-all">label</label>
             <ol>
                 <li v-for="todo in todos"
-                    v-show="!todo.completed">
+                    v-show="!todo.completed"
+                    :key="todo.id">
                     {{todo.text}}
                     <el-button v-on:click="reverseMessage(todo.id)">
                         reverse
@@ -76,7 +78,6 @@ export default{
     },
     methods:{
         reverseMessage:function(id){
-            
             this.todos[id].text = this.todos[id].text.split('').reverse().join('')
         },
         addTodo:function(){
