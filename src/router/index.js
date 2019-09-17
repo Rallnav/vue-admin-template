@@ -105,7 +105,14 @@ export const constantRoutes = [
       title: 'AllSessions',
       icon: 'Tree'
     }
-
+  },
+  {
+    path: '/sessiontest',
+    component: () => import('@/views/todo/Session'),
+    meta: {
+      title: 'Session',
+      icon: 'Tree'
+    }
   },
   {
     path: '/form',
