@@ -7,6 +7,10 @@
         </el-header>
         <el-main>
             <el-collapse>
+                <each-session v-for="session in allSessions" 
+                :key="session.id"
+                :unit="todoItem.unit">
+                </each-session>
             <el-collapse-item v-for="session in allSessions" 
             :key="session.id"
             :title="session.desciption"
@@ -45,7 +49,12 @@
 </template>
 
 <script>
+import session from './Session'
+
 export default {
+    components:{
+        'each-session': session
+    },
     data(){
         return{
             todoItem:{
@@ -72,7 +81,7 @@ export default {
                 insertTime:"",//插入时间
                 finishTime:"",//完成时间
                 completed:false,//完成状态
-                unit:"",//进度单位
+                unit:"页",//进度单位
                 finishProgress:"",//已完成进度
                 goalProgress:"",//总进度
                 percent:"",//完成进度百分比

@@ -9,7 +9,7 @@
             <el-row :gutter="50" class="container">
                 <el-col class="light-info" :span="8" ><div class="grid-content bg-purple" > 开始时间: {{session.startTime}}</div></el-col>
                 <el-col class="dark-info" :span="8" ><div class="grid-content bg-purple" > 结束时间: {{session.endTime}}</div></el-col>
-                <el-col class="light-info" :span="8" ><div class="grid-content bg-purple" > 持续时间: {{duration}}</div></el-col>
+                <el-col class="light-info" :span="8" ><div class="grid-content bg-purple" > 持续时间: {{formatSeconds(duration)}}</div></el-col>
 
                 </el-row>
                 <el-row :gutter="50" type="flex">
@@ -18,8 +18,8 @@
                 <el-col class="dark-info" :span="8"><div class="grid-content bg-purple" >完成进度: {{finishProgress}}</div></el-col>
                  </el-row>
                 <el-row :gutter="50" type="flex">
-                <el-col class="light-info" :span="8"><div class="grid-content bg-purple" >完成速度: {{speed}}</div></el-col>
-                <el-col class="dark-info" :span="8"><div class="grid-content bg-purple" >完成效率: {{effecient}}</div></el-col>
+                <el-col class="light-info" :span="8"><div class="grid-content bg-purple" >完成速度({{unit}}/小时): {{speed}}</div></el-col>
+                <el-col class="dark-info" :span="8"><div class="grid-content bg-purple" >完成效率(秒/{{unit}}): {{effecient}}</div></el-col>
                 <el-col class="light-info" :span="8"><el-button v-on:click="handleEdit()">
     edit
     </el-button></el-col>
@@ -64,19 +64,21 @@
 
 <script>
 export default {
-    // props: ['initSession'],
+    name:'session',
+    props: ['initSession','unit'],
     data(){
         return{
+
             editDialogDisplayTitle:"edit",
             editDialogVisible:false,
             editBtnLoading:false,
-            // session:this.initSession,
+            session:this.initSession,
             session:{
                     description:"一致性 Consistency如果这是一个tetttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
                     id:1,
                     parent:"",
-                    startTime: new Date(),
-                    endTime:new Date(),
+                    startTime: new Date(2019,0,1),
+                    endTime:new Date(2019,0,2),
                     startProgress:0,
                     endProgress:20,
                 },
@@ -84,8 +86,8 @@ export default {
                     description:"一致性 Consistency如果这是一个tetttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
                     id:1,
                     parent:"",
-                    startTime: new Date().toLocaleString(),
-                    endTime:new Date().toLocaleString(),
+                    startTime: new Date(),
+                    endTime:new Date(),
                     startProgress:0,
                     endProgress:20,
                 },
@@ -96,20 +98,47 @@ export default {
     },
     computed:{
         duration: function () {
-            return this.session.endTime - this.session.startTime
+            return (this.session.endTime- this.session.startTime)/1000
         },
         finishProgress: function () {
             return this.session.endProgress - this.session.startProgress
         },
         speed:function(){
-            return this.duration/this.finishProgress
+            return this.finishProgress/this.duration*60*60
         },
         effecient:function(){
-            return this.finishProgress/this.duration
+            return this.duration/this.finishProgress
         }
                
     },
     methods:{
+        formatSeconds(value) {
+	        var secondTime = parseInt(value);// 秒
+	        var minuteTime = 0;// 分
+	        var hourTime = 0;// 小时
+	        if(secondTime > 60) {//如果秒数大于60，将秒数转换成整数
+	            //获取分钟，除以60取整数，得到整数分钟
+	            minuteTime = parseInt(secondTime / 60);
+	            //获取秒数，秒数取佘，得到整数秒数
+	            secondTime = parseInt(secondTime % 60);
+	            //如果分钟大于60，将分钟转换成小时
+	            if(minuteTime > 60) {
+	                //获取小时，获取分钟除以60，得到整数小时
+	                hourTime = parseInt(minuteTime / 60);
+	                //获取小时后取佘的分，获取分钟除以60取佘的分
+	                minuteTime = parseInt(minuteTime % 60);
+	            }
+	        }
+	        var result = "" + parseInt(secondTime) + "秒";
+
+	        if(minuteTime > 0||hourTime>0) {
+	        	result = "" + parseInt(minuteTime) + "分" + result;
+	        }
+	        if(hourTime > 0) {
+	        	result = "" + parseInt(hourTime) + "小时" + result;
+	        }
+	        return result;
+	    },
         handleEdit() {
         this.editDialogDisplayTitle = 'edit'
         this.editDialogVisible = true
