@@ -1,5 +1,15 @@
 <template>
   <section class="todoapp">
+
+  <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel-item v-for="item in todos" :key="item">
+      <!-- <h3 class="medium">{{ item }}</h3> -->
+      <div class="wordpic">
+                    {{item.title.substring(0,1)}}
+                </div>
+    </el-carousel-item>
+  </el-carousel>
+
         <header class="header">
     <h1>todos</h1>
     <input class="new-todo"
@@ -206,4 +216,25 @@ onHashChange()
 
 <style scoped>
 [v-cloak] { display: none; }
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+  
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+  
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+  }
+  .wordpic{
+      min-width:185px;
+      height:260px;
+      font-size:200px;
+      text-align:center;
+  }
 </style>

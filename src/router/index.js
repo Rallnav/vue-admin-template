@@ -99,10 +99,10 @@ export const constantRoutes = [
 
   },
   {
-    path: '/allsessiontest',
-    component: () => import('@/views/todo/AllSessions'),
+    path: '/itemdetail',
+    component: () => import('@/views/todo/ItemDetail'),
     meta: {
-      title: 'AllSessions',
+      title: 'ItemDetail',
       icon: 'Tree'
     }
   },
