@@ -36,13 +36,16 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
+  {
+    path: '/todoitem/:id',
+    name: 'todoItem',
+    component: () => import('@/views/todo/ItemDetail')
+  },
   {
     path: '/',
     component: Layout,
@@ -91,28 +94,42 @@ export const constantRoutes = [
   },
   {
     path: '/lonly',
-    component: () => import('@/views/todo/Lonly'),
-    meta: {
-      title: 'Lonly',
-      icon: 'form'
-    }
-
+    component: Layout,
+    children: [{
+      path: 'lonly',
+      name: 'Lonly',
+      component: () => import('@/views/todo/Lonly'),
+      meta: {
+        title: 'Lonly',
+        icon: 'form'
+      }
+    }]
   },
   {
     path: '/itemdetail',
-    component: () => import('@/views/todo/ItemDetail'),
-    meta: {
-      title: 'ItemDetail',
-      icon: 'Tree'
-    }
+    component: Layout,
+    children: [{
+      path: 'itemdetail',
+      name: 'ItemDetail',
+      component: () => import('@/views/todo/ItemDetail'),
+      meta: {
+        title: 'ItemDetail',
+        icon: 'tree'
+      }
+    }]
   },
   {
     path: '/sessiontest',
-    component: () => import('@/views/todo/Session'),
-    meta: {
-      title: 'Session',
-      icon: 'Tree'
-    }
+    component: Layout,
+    children: [{
+      path: 'sessiontest',
+      name: 'Session',
+      component: () => import('@/views/todo/Session'),
+      meta: {
+        title: 'Session',
+        icon: 'tree'
+      }
+    }]
   },
   {
     path: '/form',
