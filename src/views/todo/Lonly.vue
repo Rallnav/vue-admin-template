@@ -29,7 +29,7 @@
 				@keyup.enter="addTodo"
 			>
 		</header>
-		<section
+		<div
 			class="main"
 			v-show="todos.length"
 			v-cloak
@@ -45,7 +45,7 @@
 				<li
 					v-for="(todo, index) in filteredTodos"
 					class="todo"
-					:key="index"
+					:key="todo.id"
 					:class="{ completed: todo.completed, editing: todo == editedTodo }"
 				>
 					<div class="view">
@@ -53,7 +53,7 @@
 							class="toggle"
 							type="checkbox"
 							v-model="todo.completed"
-							@change="changeComplete(todo)"
+							@change="changeComplete(todo, index)"
 						>
 						<label @dblclick="editTodo(todo)">{{ todo.abstract }}</label>
 						<button
@@ -76,7 +76,7 @@
 					>
 				</li>
 			</ul>
-		</section>
+		</div>
 		<footer
 			class="footer"
 			v-show="todos.length"
@@ -114,7 +114,7 @@
 import { getTodos, addNewTodo, deleteTodo, changeStatus } from "@/api/todo";
 import itemDetail from "./ItemDetail";
 // visibility filters
-var filters = {
+var filtered = {
 	all: function(todos) {
 		return todos;
 	},
@@ -165,10 +165,10 @@ export default {
 		},
 		filteredTodos: function() {
 			// console.log(filters[this.visibility](this.todos));
-			return filters[this.visibility](this.todos);
+			return filtered[this.visibility](this.todos);
 		},
 		remaining: function() {
-			return filters.active(this.todos).length;
+			return filtered.active(this.todos).length;
 		},
 		allDone: {
 			get: function() {
@@ -177,7 +177,13 @@ export default {
 			set: function(value) {
 				this.todos.forEach(function(todo) {
 					todo.completed = value;
-					changeComplete(todo);
+					changeStatus({
+						query: { id: todo._id.$oid },
+						update: {
+							completed: todo.completed,
+							finishTime: todo.completed ? new Date() : ""
+						}
+					});
 				});
 			}
 		}
@@ -192,13 +198,16 @@ export default {
 	// methods that implement data logic.
 	// note there's no DOM manipulation here at all.
 	methods: {
-		changeComplete: function(todo) {
+		changeComplete: function(todo, index) {
 			changeStatus({
 				query: { id: todo._id.$oid },
 				update: {
 					completed: todo.completed,
-					finishTime: todo.completed ? new Date() : ""
+					finishTime: todo.completed ? new Date() : "",
+					abstract: todo.abstract
 				}
+			}).then(response => {
+				this.getTodoList();
 			});
 		},
 		addTodo: function() {
@@ -211,8 +220,9 @@ export default {
 				completed: false,
 				insertTime: new Date()
 			};
-			addNewTodo(newTodoItem);
-			this.getTodoList();
+			addNewTodo(newTodoItem).then(response => {
+				this.getTodoList();
+			});
 			this.newTodo = "";
 		},
 
