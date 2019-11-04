@@ -45,7 +45,7 @@
 				<li
 					v-for="(todo, index) in filteredTodos"
 					class="todo"
-					:key="todo.id"
+					:key="todo._id.$oid"
 					:class="{ completed: todo.completed, editing: todo == editedTodo }"
 				>
 					<div class="view">
