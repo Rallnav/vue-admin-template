@@ -93,6 +93,19 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/chart',
+    component: Layout,
+    children: [{
+      path: 'chart',
+      name: 'Chart',
+      component: () => import('@/components/Echarts/index'),
+      meta: {
+        title: 'chart',
+        icon: 'form'
+      }
+    }]
+  },
+  {
     path: '/lonly',
     component: Layout,
     children: [{

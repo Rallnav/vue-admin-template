@@ -300,7 +300,7 @@ export default {
 
 <style lang="scss" scoped>
 .session-title {
-	width: 50%;
+	width: 100%;
 	margin: 0 auto;
 	border: 1px solid;
 	border-radius: 10px 10px 10px 10px;

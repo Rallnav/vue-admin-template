@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import echarts from 'echarts'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -30,6 +31,8 @@ if (process.env.NODE_ENV === 'production') {
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
+
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
