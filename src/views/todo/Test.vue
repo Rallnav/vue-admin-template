@@ -1,7 +1,7 @@
 <template>
 	<!-- 业绩表现 -->
 	<div class="index">
-		<time-counting :autoStart="true" />
+		<time-count :autoStart="true" />
 		<timecount2 />
 	</div>
 </template>
@@ -9,12 +9,12 @@
 <script>
 // import MyEcharts from "@/components/Echarts/index"; //echarts
 // import radar from "@/components/Echarts/radar";
-import timeCounting from "./timeCounting";
+import timeCount from "./timeCount";
 
 import timecount2 from "./timecount2";
 export default {
 	components: {
-		timeCounting,
+		timeCount,
 		timecount2
 	},
 	data() {
