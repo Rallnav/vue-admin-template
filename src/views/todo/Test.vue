@@ -1,17 +1,21 @@
 <template>
 	<div class="index">
-    <el-button @click="raise">
-      抛出异常
-    </el-button>
-		<time-count :autoStart="true" @getDataFromChild="getTime"/>
-    <el-dialog
-      title="新增记录"
-      :visible.sync="newSessionDialog"
-      :before-close="handleClose"
-      class="newSession"
-    >
-      <edit-session realTime="true"/>
-    </el-dialog>
+		<el-button @click="raise">
+			抛出异常
+		</el-button>
+		<!-- <time-count
+			:autoStart="true"
+			@getDataFromChild="getTime"
+			:realTime="true"
+		/> -->
+		<el-dialog
+			title="新增记录"
+			:visible.sync="newSessionDialog"
+			:before-close="handleClose"
+			class="newSession"
+		>
+			<edit-session :realTime="false" />
+		</el-dialog>
 	</div>
 </template>
 
@@ -22,31 +26,31 @@ import editSession from "./editSession";
 export default {
 	components: {
 		timeCount,
-    editSession
+		editSession
 	},
 	data() {
 		return {
-		  result:"初始化大哥",
-      newSessionDialog:true,
+			result: "初始化大哥",
+			newSessionDialog: true
 		};
 	},
 	mounted() {
 		this.initCharts();
 	},
 	methods: {
-    raise(){
-      throw new Error('阿斯蒂芬')
-    },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
-    getTime:function(result){
-      this.result = result;
-    },
+		raise() {
+			throw new Error("阿斯蒂芬");
+		},
+		handleClose(done) {
+			this.$confirm("确认关闭？")
+				.then(_ => {
+					done();
+				})
+				.catch(_ => {});
+		},
+		getTime: function(result) {
+			this.result = result;
+		},
 		initCharts() {
 			this.chartOption = {
 				tooltip: {
