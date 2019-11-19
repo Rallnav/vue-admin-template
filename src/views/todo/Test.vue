@@ -1,34 +1,52 @@
 <template>
-	<!-- 业绩表现 -->
 	<div class="index">
-		<time-count :autoStart="true" />
-		<timecount2 />
+    <el-button @click="raise">
+      抛出异常
+    </el-button>
+		<time-count :autoStart="true" @getDataFromChild="getTime"/>
+    <el-dialog
+      title="新增记录"
+      :visible.sync="newSessionDialog"
+      :before-close="handleClose"
+      class="newSession"
+    >
+      <edit-session realTime="true"/>
+    </el-dialog>
 	</div>
 </template>
 
 <script>
-// import MyEcharts from "@/components/Echarts/index"; //echarts
-// import radar from "@/components/Echarts/radar";
 import timeCount from "./timeCount";
+import editSession from "./editSession";
 
-import timecount2 from "./timecount2";
 export default {
 	components: {
 		timeCount,
-		timecount2
+    editSession
 	},
 	data() {
 		return {
-			level: [1, 2, 3],
-			chartOption: {},
-			echartsXYcolor: "#fff000",
-			lineColor: "#5bb1f0"
+		  result:"初始化大哥",
+      newSessionDialog:true,
 		};
 	},
 	mounted() {
 		this.initCharts();
 	},
 	methods: {
+    raise(){
+      throw new Error('阿斯蒂芬')
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    getTime:function(result){
+      this.result = result;
+    },
 		initCharts() {
 			this.chartOption = {
 				tooltip: {

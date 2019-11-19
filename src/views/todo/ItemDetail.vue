@@ -525,18 +525,23 @@
 				</el-form>
 			</div>
 		</el-drawer>
+
 		<el-dialog
 			title="新增记录"
 			:visible.sync="newSessionDialog"
 			:before-close="handleClose"
 			class="newSession"
 		>
-			<el-form :model="newSession">
+			<el-form :model="Session">
+        <el-form-item label="计时器" v-if="realTime">
+          <time-count :autoStart="true">
+          </time-count>
+        </el-form-item>
 				<el-form-item label="本次记录内容简述">
-					<el-input v-model="newSession.description"></el-input>
+					<el-input v-model="Session.description"></el-input>
 				</el-form-item>
 				<el-form-item label="本次记录笔记">
-					<el-input v-model="newSession.note"></el-input>
+					<el-input v-model="Session.note"></el-input>
 				</el-form-item>
 				<el-form-item label="时间记录">
 					<el-date-picker
@@ -548,18 +553,27 @@
 						align="right"
 					>
 					</el-date-picker>
+          <el-input v-model="Session.duration">
+
+          </el-input>
 				</el-form-item>
+        <el-form-item label="持续时间">
+
+          <el-input v-model="Session.duration">
+
+          </el-input>
+        </el-form-item>
 				<el-form-item lable="进度标记">
 					<el-input
 						placeholder="请输入本次起始进度"
-						v-model.number="newSession.startProgress"
+						v-model.number="Session.startProgress"
 						type="number"
 						clearable
 					>
 					</el-input>
 					<el-input
 						placeholder="请输入本次结束进度"
-						v-model.number="newSession.endProgress"
+						v-model.number="Session.endProgress"
 						type="number"
 						clearable
 					>
@@ -585,6 +599,7 @@
 </template>
 <script>
 import session from "./Session";
+import timeCount from "./timeCount";
 import {
 	getTodos,
 	changeStatus,
@@ -598,10 +613,12 @@ export default {
 	name: "item-details",
 	components: {
 		"each-session": session,
+    timeCount,
 		radar
 	},
 	data() {
 		return {
+      realTime:false,
 			newSessionDialog: false,
 			newSessionTime: "",
 			showSession: false,
@@ -714,13 +731,14 @@ export default {
 					finishProgress: 20
 				}
 			],
-			newSession: {
+			Session: {
 				description: "",
 				note: "",
 				startTime: "",
 				endTime: "",
 				startProgress: -1,
-				endProgress: -1
+				endProgress: -1,
+        duration:0,
 			},
 			formData: new FormData(),
 			dialogImageUrl: "",
@@ -784,21 +802,21 @@ export default {
 		newSessionProgress: {
 			get() {
 				if (
-					this.newSession.startProgress >= 0 &&
-					this.newSession.endProgress >= 0
+					this.Session.startProgress >= 0 &&
+					this.Session.endProgress >= 0
 				) {
-					return this.newSession.endProgress - this.newSession.startProgress;
+					return this.Session.endProgress - this.Session.startProgress;
 				} else {
 					return 0;
 				}
 			},
 			set(newValue) {
-				if (Number(this.newSession.startProgress) >= 0) {
-					this.newSession.endProgress =
-						Number(this.newSession.startProgress) + Number(newValue);
-				} else if (Number(this.newSession.endProgress) >= 0) {
-					this.newSession.startProgress =
-						Number(this.newSession.endProgress) - Number(newValue);
+				if (Number(this.Session.startProgress) >= 0) {
+					this.Session.endProgress =
+						Number(this.Session.startProgress) + Number(newValue);
+				} else if (Number(this.Session.endProgress) >= 0) {
+					this.Session.startProgress =
+						Number(this.Session.endProgress) - Number(newValue);
 				}
 			}
 		},
@@ -825,7 +843,7 @@ export default {
 	},
 	methods: {
 		newSessionAdd() {
-			let sess = this.newSession;
+			let sess = this.Session;
 			console.log(this.newSessionTime);
 			sess.startTime = this.newSessionTime[0];
 			sess.endTime = this.newSessionTime[1];
@@ -835,7 +853,7 @@ export default {
 				sess
 			}).then(response => {
 				this.newSessionDialog = false;
-				this.newSession = {
+				this.Session = {
 					description: "",
 					note: "",
 					startTime: "",

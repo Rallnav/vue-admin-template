@@ -162,8 +162,8 @@ export default {
 				vm.globalTimer = null;
 				vm.isStart = false;
 				vm.pauseTime = new Date().getTime();
-				data = new Date().getTime() - vm.countStart + vm.countExsit;
-				vm.passToParent(data);
+				var result = new Date().getTime() - vm.countStart + vm.countExsit;
+				vm.passToParent(result);
 			}
 		},
 		reset: function() {
@@ -193,6 +193,6 @@ export default {
 .wrapper {
 	text-align: center;
 	width: 60%;
-	margin: 250px auto;
+	margin: auto;
 }
 </style>

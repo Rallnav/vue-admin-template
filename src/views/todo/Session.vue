@@ -214,6 +214,7 @@ export default {
 				parent: "",
 				startTime: new Date(2019, 0, 1),
 				endTime: new Date(2019, 0, 2),
+        duration:0,
 				startProgress: 0,
 				endProgress: 20
 			},
@@ -224,6 +225,7 @@ export default {
 				parent: "",
 				startTime: new Date(),
 				endTime: new Date(),
+        duration:0,
 				startProgress: 0,
 				endProgress: 20
 			},
