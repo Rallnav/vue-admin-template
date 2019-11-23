@@ -2,7 +2,7 @@
 	<div class="detail-home">
 		<section
 			id="operation-button"
-			style="position:fixed;left:0px"
+			style="position:fixed;left:0px;z-index:1"
 		>
 			<el-button
 				circle
@@ -169,7 +169,7 @@
 					<el-button
 						round
 						style="width:90%"
-						@click="showNewSession"
+						@click="addNewSession"
 					>
 						直接新增任务
 					</el-button>
@@ -192,7 +192,7 @@
 							<el-input
 								v-model="sub.text"
 								placeholder="请输入内容"
-								maxlength="30"
+								maxlength="100"
 								@keyup.enter.native="editSubTask"
 							></el-input>
 						</el-col>
@@ -526,9 +526,9 @@
 			</div>
 		</el-drawer>
 
-		<el-dialog
+		<!-- <el-dialog
 			title="新增记录"
-			:visible.sync="newSessionDialog"
+			:visible.sync="sessionFormDialog"
 			:before-close="handleClose"
 			class="newSession"
 		>
@@ -586,19 +586,31 @@
 					</template>
 				</el-form-item>
 				<span class="dialog-footer">
-					<el-button @click="newSessionDialog = false">取 消</el-button>
+					<el-button @click="sessionFormDialog = false">取 消</el-button>
 					<el-button
 						type="primary"
 						@click="newSessionAdd"
 					>确 定</el-button>
 				</span>
 			</el-form>
+		</el-dialog> -->
+		<el-dialog
+			title="新增记录"
+			:visible.sync="sessionFormDialog"
+			:before-close="handleClose"
+			class="newSession"
+		>
+			<session-form
+				:session="toEditSession"
+				@cancelForm="cancelSessionEdit"
+				@confirm="getDataFromForm"
+			/>
 		</el-dialog>
-
 	</div>
 </template>
 <script>
 import session from "./Session";
+import sessionForm from "./sessionForm";
 import timeCount from "./timeCount";
 import {
 	getTodos,
@@ -612,14 +624,16 @@ import radar from "@/components/Echarts/radar";
 export default {
 	name: "item-details",
 	components: {
-		"each-session": session,
-    timeCount,
+		eachSession: session,
+		timeCount,
+		sessionForm,
 		radar
 	},
 	data() {
 		return {
-      realTime:false,
-			newSessionDialog: false,
+			toEditSession: {},
+			realTime: false,
+			sessionFormDialog: false,
 			newSessionTime: "",
 			showSession: false,
 			path: "wallhaven-94967.jpg",
@@ -738,7 +752,7 @@ export default {
 				endTime: "",
 				startProgress: -1,
 				endProgress: -1,
-        duration:0,
+				duration: 0
 			},
 			formData: new FormData(),
 			dialogImageUrl: "",
@@ -801,10 +815,7 @@ export default {
 	computed: {
 		newSessionProgress: {
 			get() {
-				if (
-					this.Session.startProgress >= 0 &&
-					this.Session.endProgress >= 0
-				) {
+				if (this.Session.startProgress >= 0 && this.Session.endProgress >= 0) {
 					return this.Session.endProgress - this.Session.startProgress;
 				} else {
 					return 0;
@@ -842,6 +853,16 @@ export default {
 		}
 	},
 	methods: {
+		getDataFromForm(val) {
+			val.parent = this.todoItem._id.$oid;
+			if (!val.id) {
+				delete val.id;
+			}
+			this.sessionFormDialog = false;
+		},
+		cancelSessionEdit() {
+			this.sessionFormDialog = false;
+		},
 		newSessionAdd() {
 			let sess = this.Session;
 			console.log(this.newSessionTime);
@@ -852,7 +873,7 @@ export default {
 			addSession({
 				sess
 			}).then(response => {
-				this.newSessionDialog = false;
+				this.sessionFormDialog = false;
 				this.Session = {
 					description: "",
 					note: "",
@@ -863,8 +884,8 @@ export default {
 				};
 			});
 		},
-		showNewSession() {
-			this.newSessionDialog = true;
+		addNewSession() {
+			this.sessionFormDialog = true;
 		},
 		submitComment() {
 			changeStatus({

@@ -1,13 +1,6 @@
 <template>
-	<el-form :model="session">
+	<el-form>
 
-		<el-form-item
-			label="计时器"
-			v-if="realTime"
-		>
-			<time-count :autoStart="true">
-			</time-count>
-		</el-form-item>
 		<el-form-item label="本次记录内容简述">
 			<el-input v-model="description"></el-input>
 		</el-form-item>
@@ -85,7 +78,7 @@
 		</el-form-item>
 
 		<span class="dialog-footer">
-			<el-button @click="newSessionDialog = false">取 消</el-button>
+			<el-button @click="cancelForm">取 消</el-button>
 			<el-button
 				type="primary"
 				@click="add"
@@ -97,7 +90,7 @@
 <script>
 import timeCount from "./timeCount";
 export default {
-	name: "editSession",
+	name: "sessionForm",
 	components: {
 		timeCount
 	},
@@ -110,13 +103,12 @@ export default {
 			type: Object,
 			default() {
 				return {
-					description:
-						"一致性 Consistency如果这是一个tetttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
-					id: 1,
+					description: "",
+					note: "",
 					parent: "",
 					startTime: new Date(),
 					endTime: new Date(),
-					duration: 10000,
+					duration: 0,
 					startProgress: 0,
 					endProgress: 20
 				};
@@ -127,6 +119,7 @@ export default {
 		return {
 			description: this.session.description,
 			note: this.session.note,
+			id: this.session.id,
 			startProgress: this.session.startProgress,
 			endProgress: this.session.endProgress,
 			duration: this.session.duration,
@@ -139,14 +132,27 @@ export default {
 	},
 	methods: {
 		add() {
-			this.$emit("getSession", data);
+			var sessionResult = {
+				description: this.description,
+				note: this.note,
+				id: this.id,
+				startProgress: this.startProgress,
+				endProgress: this.endProgress,
+				duration: this.duration,
+				startTime: this.sessionTime[0],
+				endTime: this.sessionTime[1],
+				finishedProgress: this.finishedProgress
+			};
+			this.$emit("confirm", sessionResult);
+		},
+		cancelForm() {
+			this.$emit("cancelForm");
 		}
 	},
+
 	watch: {
 		sessionTime: {
 			handler(newValue) {
-				console.log(newValue);
-				console.log(this.sessionTime);
 				this.duration = newValue[1].getTime() - newValue[0].getTime();
 				(this.second = Math.floor((this.duration / 1000) % 60)),
 					(this.minute = Math.floor((this.duration / 1000 / 60) % 60)),

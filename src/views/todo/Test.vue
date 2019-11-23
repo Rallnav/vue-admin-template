@@ -14,19 +14,19 @@
 			:before-close="handleClose"
 			class="newSession"
 		>
-			<edit-session :realTime="false" />
+			<session-form @getSession="getSession" />
 		</el-dialog>
 	</div>
 </template>
 
 <script>
 import timeCount from "./timeCount";
-import editSession from "./editSession";
+import sessionForm from "./sessionForm";
 
 export default {
 	components: {
 		timeCount,
-		editSession
+		sessionForm
 	},
 	data() {
 		return {
@@ -38,6 +38,7 @@ export default {
 		this.initCharts();
 	},
 	methods: {
+		getSession() {},
 		raise() {
 			throw new Error("阿斯蒂芬");
 		},

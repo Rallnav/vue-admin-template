@@ -36,6 +36,8 @@ export default {
 			isStart: false,
 			globalTimer: null, //获取setInterval对象值
 			countString: "00:00:00", //用来显示时间
+			startTime: new Date(),
+			endTime: 0,
 			day: 0,
 			hour: 0,
 			minute: 0,
@@ -114,12 +116,6 @@ export default {
 			var vm = this;
 			var nowDate = new Date().getTime();
 			var num = nowDate - counterTime + vm.countExsit;
-			// if (vm.pauseTime == 0) {
-			// 	var num = nowDate - counterTime; //计算时间毫秒差
-			// } else {
-			// 	vm.pauseTime = vm.pauseTime + 10;
-			// 	var num = vm.pauseTime - counterTime; //计算时间毫秒差
-			// }
 			var leave1 = num % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
 			var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
 			var leave3 = leave2 % (60 * 1000); //计算分钟数后剩余的毫秒数
@@ -162,8 +158,14 @@ export default {
 				vm.globalTimer = null;
 				vm.isStart = false;
 				vm.pauseTime = new Date().getTime();
-				var result = new Date().getTime() - vm.countStart + vm.countExsit;
-				vm.passToParent(result);
+				var countingTime = new Date().getTime() - vm.countStart + vm.countExsit;
+				this.endTime = new Date();
+
+				vm.passToParent({
+					countingTime,
+					startTime: this.startTime,
+					endTime: this.endTime
+				});
 			}
 		},
 		reset: function() {
