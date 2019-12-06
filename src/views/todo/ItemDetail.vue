@@ -1,20 +1,18 @@
 <template>
 	<div class="detail-home">
-		<section
-			id="operation-button"
-			style="position:fixed;left:0px;z-index:1"
-		>
-			<el-button
-				circle
-				type="danger"
-				@click="backToTodo"
-				icon="el-icon-refresh-left"
-			></el-button>
+		<section id="operation-button">
 			<el-button
 				type="primary"
 				circle
 				icon="el-icon-s-grid"
 				@click="startEdit"
+				style="margin-left:10px"
+			></el-button>
+			<el-button
+				circle
+				type="danger"
+				@click="backToTodo"
+				icon="el-icon-refresh-left"
 			></el-button>
 			<el-button
 				type="success"
@@ -985,6 +983,16 @@ export default {
 
 <style lang="scss" scoped>
 $them-color: #ed795a;
+#operation-button {
+	position: fixed;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	left: 0px;
+	z-index: 0;
+}
 .detail-home {
 	display: flex;
 	flex-direction: column;
