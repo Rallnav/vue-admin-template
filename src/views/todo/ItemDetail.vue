@@ -137,14 +137,9 @@
 							>
 							</el-rate>
 						</el-tooltip>
-						<span>
-							项目等级雷达图
-						</span>
-						<!-- <radar
-							:id="'exampleId'"
-							:style="{width: '100%', height: '150px'}"
-							:levels="levels"
-						/> -->
+						<raddar-chart height="150px">
+
+						</raddar-chart>
 					</div>
 				</el-col>
 			</el-row>
@@ -192,6 +187,7 @@
 								placeholder="请输入内容"
 								maxlength="100"
 								@keyup.enter.native="editSubTask"
+								@blur.native.capture="editSubTask"
 							></el-input>
 						</el-col>
 						<el-col :span="1">
@@ -618,14 +614,14 @@ import {
 	deleteSession,
 	editSession
 } from "@/api/todo";
-import radar from "@/components/Echarts/radar";
+import RaddarChart from "@/components/Echarts/RaddarChart";
 export default {
 	name: "item-details",
 	components: {
 		eachSession: session,
 		timeCount,
 		sessionForm,
-		radar
+		RaddarChart
 	},
 	data() {
 		return {
